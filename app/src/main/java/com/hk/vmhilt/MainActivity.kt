@@ -14,14 +14,13 @@ class MainActivity : AppCompatActivity() {
     val TAG = "MainActivity"
     /**
      * Field Injection
+     *
+     * we mark our field injection with the @Inject annotation,
+     * thus telling Hilt that we need this dependency injected within this activity container.
      */
     @Inject
     @Named("main string")
     lateinit var mainString: String
-
-    /**
-     * Field Injection
-     */
     @Inject
     lateinit var cricket: Cricket
 
@@ -40,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 /**
  * constructor injection.
  * we are injecting name field.
+ * we use @Inject to tell Hilt How to make the object of this Cricket class
  */
 class Cricket @Inject constructor (@Named("cricketer string") private var name: String?, var address: Address) {
 
