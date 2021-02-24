@@ -100,6 +100,6 @@ package com.hk.vmhilt
              The block tells us that if the dependency have the @Singleton annotation, then its is used
              in Singleton component/Activity component. But that same dependency can be accessed in any
              child component like Activity etc.
-                
+
 
 */
