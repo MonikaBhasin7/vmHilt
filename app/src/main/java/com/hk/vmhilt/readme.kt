@@ -34,4 +34,72 @@ package com.hk.vmhilt
          instances of that class
       -> Inject an notation on top of any field tell the hilt that this field is injectable, we have
          to provide this filed through injection into this component.
+
+
+      Component
+      -> When we pu the @AndroidEntryPoint over the top of class, Activity, Fragment, ViewModel etc,
+         then Hilt generates the Component. It tells that this activity is ready to inject the
+         fields inside it.
+      -> The component will get destroy when the activity destroys in the case of Activity component.
+
+
+     Scoping
+
+        Android class           Generated component         Scope
+        -------------            -----------------          ---------
+        Application             Application component       @Singleton
+        Activity	            ActivityRetainedComponent	@ActivityRetainedScoped
+        ViewModel	            ViewModelComponent	        @ViewModelScoped
+        Activity	            ActivityComponent	        @ActivityScoped
+        Fragment	            FragmentComponent	        @FragmentScoped
+        View	                ViewComponent	            @ViewScoped
+
+        If we put @Singelton annotation on top of any dependency/binding, then its is scoped on/over the
+        application component. It means it is used only in Application component or in its child component.
+
+
+        By default, all bindings in Hilt are unscoped. This means that each time your app requests
+        the binding, Hilt creates a new instance of the dependency.
+
+        Hilt also allows a binding to be scoped to a particular component. Hilt only creates a scoped
+        binding once per instance of the component that the binding is scoped to, and all
+        requests for that binding share the same instance.
+
+        Eg: if you scope AnalyticsAdapter to the ActivityComponent using @ActivityScoped,
+        Hilt provides the same instance of AnalyticsAdapter throughout the life of the corresponding activity.
+        If we calls the AnalyticsAdapter multiple times, it returns the same instance.
+
+        Note: Scoping a binding to a component can be costly because the provided object stays in
+        memory until that component is destroyed. Minimize the use of scoped bindings in your application.
+        It is appropriate to use component-scoped bindings for bindings with an internal state that
+        requires that same instance to be used within a certain scope, for bindings that need synchronization,
+         or for bindings that you have measured to be expensive to create.
+
+
+     Component Hierarchy
+
+            ------------------
+            @Singleton
+            SingletonComponent
+            ------------------
+                    |
+                    |
+                    |
+            -----------------------
+            @ActivityRetainedScoped
+            ActivityComponent
+            ------------------------
+                    |
+                    |
+                    |
+             ----------------------
+             @ActivityScoped
+             ActivityComponent
+             ----------------------
+
+             The block tells us that if the dependency have the @Singleton annotation, then its is used
+             in Singleton component/Activity component. But that same dependency can be accessed in any
+             child component like Activity etc.
+                
+
 */
